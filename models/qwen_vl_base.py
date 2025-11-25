@@ -1,0 +1,174 @@
+import os
+from transformers import AutoProcessor
+from vllm import LLM, SamplingParams
+from qwen_vl_utils import process_vision_info
+from PIL import Image
+from typing import Dict, List, Tuple, Any, Optional, Union
+
+class QwenVL:
+    def __init__(
+        self,
+        model_path: str,
+        tensor_parallel_size: int = 2,
+        trust_remote_code: bool = False,
+        gpu_memory_utilization: float = 0.9
+    ):
+        """
+        初始化QwenVL模型
+        
+        Args:
+            model_path: 模型路径
+            tensor_parallel_size: GPU并行数量，可选值为1,2,4,8
+            trust_remote_code: 是否信任远程代码
+            gpu_memory_utilization: GPU内存使用率
+        """
+        # 验证tensor_parallel_size参数
+        valid_sizes = [1, 2, 4, 8]
+        if tensor_parallel_size not in valid_sizes:
+            print(f"警告: tensor_parallel_size={tensor_parallel_size}不是有效值，将使用默认值2")
+            tensor_parallel_size = 2
+            
+        self.processor = AutoProcessor.from_pretrained(model_path)
+        self.llm = LLM(
+            model=model_path,
+            limit_mm_per_prompt={"image": 10, "video": 10},
+            tensor_parallel_size=tensor_parallel_size,
+            trust_remote_code=trust_remote_code,
+            gpu_memory_utilization=gpu_memory_utilization
+        )
+        
+        # 默认采样参数
+        self.default_sampling_params = SamplingParams(
+            temperature=0.1,
+            top_p=0.001,
+            repetition_penalty=1.05,
+            max_tokens=4096,
+            stop_token_ids=[],
+        )
+
+    def prepare_prompt(self, image: Union[List[Image.Image], Image.Image], prompt_template: str) -> Any:
+        if not isinstance(image, List):
+            image = [image]
+        
+        messages = [
+            {"role": "system", "content": "You are a helpful assistant."},
+            {
+                "role": "user",
+                "content": [
+                    {
+                        "type": "image",
+                        "image": img,
+                        "min_pixels": 224 * 224,
+                        "max_pixels": 1280 * 28 * 28,
+                    } for img in image
+                    ] + [{"type": "text", "text": prompt_template}],
+            },
+        ]
+
+
+        return messages
+    
+    def forward(self, final_prompt, custom_sampling_params: Optional[SamplingParams] = None):
+        sampling_params = custom_sampling_params or self.default_sampling_params
+
+        prompt = self.processor.apply_chat_template(
+            final_prompt,
+            tokenize=False,
+            add_generation_prompt=True,
+        )
+
+        image_inputs, video_inputs = process_vision_info(final_prompt)
+        resize_size = image_inputs[0].size if image_inputs is not None else None
+        
+        mm_data = {}
+        if image_inputs is not None:
+            mm_data["image"] = image_inputs
+        if video_inputs is not None:
+            mm_data["video"] = video_inputs
+
+        llm_inputs = {
+            "prompt": prompt,
+            "multi_modal_data": mm_data,
+        }
+
+        outputs = self.llm.generate([llm_inputs], sampling_params=sampling_params)
+        generated_text = outputs[0].outputs[0].text
+
+        # if resize_size is not None:
+        #     return generated_text, resize_size
+        
+        return generated_text
+
+    def generate(
+        self,
+        image: Union[List[Image.Image], Image.Image],
+        prompt_template: str,
+        custom_sampling_params: Optional[SamplingParams] = None
+    ) -> str:
+        """
+        模型前向推理
+        
+        Args:
+            image: PIL图像对象或图像列表
+            prompt_template: 提示模板
+            custom_sampling_params: 自定义采样参数
+            
+        Returns:
+            Tuple[str, tuple]: (生成的文本, 图像尺寸)
+        """
+        if not isinstance(image, List):
+            image = [image]
+
+        sampling_params = custom_sampling_params or self.default_sampling_params
+        
+        messages = [
+            {"role": "system", "content": "You are a helpful assistant."},
+            {
+                "role": "user",
+                "content": [
+                    {
+                        "type": "image",
+                        "image": img,
+                        "min_pixels": 224 * 224,
+                        "max_pixels": 1280 * 28 * 28,
+                    } for img in image
+                    ] + [{"type": "text", "text": prompt_template}],
+            },
+        ]
+
+        prompt = self.processor.apply_chat_template(
+            messages,
+            tokenize=False,
+            add_generation_prompt=True,
+        )
+        
+        image_inputs, video_inputs = process_vision_info(messages)
+        resize_size = image_inputs[0].size if image_inputs is not None else None
+        
+        mm_data = {}
+        if image_inputs is not None:
+            mm_data["image"] = image_inputs
+        if video_inputs is not None:
+            mm_data["video"] = video_inputs
+
+        llm_inputs = {
+            "prompt": prompt,
+            "multi_modal_data": mm_data,
+        }
+
+        outputs = self.llm.generate([llm_inputs], sampling_params=sampling_params)
+        generated_text = outputs[0].outputs[0].text
+
+        if resize_size is not None:
+            return generated_text, resize_size
+        
+        return generated_text
+    
+
+
+if __name__ == "__main__":
+    qwen = QwenVL(model_path="/mnt/shenzhen2cephfs/mm-base-vision/kotisye/pretrain/Qwen2.5-VL-72B-Instruct", tensor_parallel_size=2)
+    image = Image.open("test.jpg")
+    prompt_template = "请描述这张图片"
+    generated_text, resize_size = qwen.forward(image, prompt_template)
+    print(generated_text)
