@@ -1,17 +1,3 @@
-"""
-UnicBench Evaluation Pipeline
-专用于评测和统计分数的代码（不包含编辑图像）
-
-使用方法:
-python eval_pipeline.py \
-    --data_path ../data/test_data.jsonl \
-    --save_dir /path/to/results \
-    --edit_model_name qwen-image-edit \
-    --vlm_model_name gpt-4.1 \
-    --languages en cn \
-    --num_workers 4
-"""
-
 import os
 import json
 import argparse
@@ -94,6 +80,7 @@ class UnicBenchEvaluator:
     def __init__(
         self,
         data_path: str,
+        image_dir: str,
         save_dir: str,
         edit_model_name: str,
         vlm_model: VLMModel,
@@ -112,6 +99,7 @@ class UnicBenchEvaluator:
             num_workers: 并行评估的worker数量
         """
         self.data_path = data_path
+        self.image_dir = image_dir
         self.save_dir = save_dir
         self.edit_model_name = edit_model_name
         self.vlm_model = vlm_model
@@ -285,7 +273,8 @@ class UnicBenchEvaluator:
                     eval_tasks = []
                     for sample in samples:
                         try:
-                            original_image = Image.open(sample["image_path"]).convert("RGB")
+                            original_image_path = os.path.join(self.image_dir, sample["image_path"])
+                            original_image = Image.open(original_image_path).convert("RGB")
                             key = sample["key"]
                             img_path = os.path.join(img_dir, f"{key}.png")
                             
@@ -514,6 +503,8 @@ def parse_arguments() -> argparse.Namespace:
                        help='测试数据jsonl文件路径')
     parser.add_argument('--save_dir', type=str, required=True,
                        help='结果保存根目录')
+    parser.add_argument('--image_dir', type=str, required=True,
+                       help='原始图像目录')
     
     # 模型参数
     parser.add_argument('--edit_model_name', type=str, required=True,
@@ -570,6 +561,7 @@ def main():
         # 初始化评估器
         evaluator = UnicBenchEvaluator(
             data_path=args.data_path,
+            image_dir=args.image_dir,
             save_dir=args.save_dir,
             edit_model_name=args.edit_model_name,
             vlm_model=vlm_model,
