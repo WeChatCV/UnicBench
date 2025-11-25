@@ -5,7 +5,7 @@ OUTPUT_DIR=/mnt/shenzhen2cephfs/mm-base-vision/kotisye/result/unicbench
 
 CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 torchrun \
   --nproc_per_node 8 \
-  -m inference.gen_samples_flux \
+  -m inference.gen_samples_qwen \
   --model_path ${MODEL_PATH} \
   --unicbench_dir ${UNICBENCH_DIR} \
   --unicbench_path data/test_data.jsonl \
