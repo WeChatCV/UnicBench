@@ -1,12 +1,10 @@
 # UnicEdit-10M: A Dataset and Benchmark Breaking the Scale-Quality Barrier via Unified Verification for Reasoning-Enriched Edits
-
-<p align="center">
-  <img src="assets/teaser.png" width="100%">
-</p>
-
 ## 📌 Abstract
 
 With the rapid advances of powerful multimodal models such as GPT-4o, Nano Banana, and Seedream 4.0 in Image Editing, the performance gap between closed-source and open-source models is widening, primarily due to the scarcity of large-scale, high-quality training data and comprehensive benchmarks capable of diagnosing model weaknesses across diverse editing behaviors. Existing data construction methods face a scale-quality trade-off: human annotations are high-quality but not scalable, while automated pipelines suffer from error propagation and noise. To address this, we introduce a lightweight data pipeline that replaces multi-toolchains with an end-to-end model and a unified post-verification stage. For scalable quality control, we train a 7B dual-task expert model, **Qwen-Verify**, for efficient failure detection and instruction recaptioning. This pipeline yields **UnicEdit-10M**, a 10M-scale dataset spanning diverse basic and complex editing tasks. We also propose **UnicBench**, a general benchmark that extends beyond basic edits to explicitly assess spatial and knowledge-driven reasoning. To enable fine-grained diagnosis, we introduce novel metrics, including *Non-edit Consistency* and *Reasoning Accuracy*. Our analysis of mainstream models on UnicBench reveals their limitations and provides clear directions for future research. The dataset, benchmark, and code will be released.
+<p align="center">
+  <img src="assets/teaser.png" width="100%">
+</p>
 
 ## 🔥 News
 
@@ -59,16 +57,11 @@ UnicBench/
 ## 🛠️ Installation
 
 ```bash
-# Clone the repository
-git clone https://github.com/xxx/UnicBench.git
-cd UnicBench
-
 # Create conda environment
-conda create -n unicbench python=3.10
+conda create -n unicbench python=3.11
 conda activate unicbench
 
 # Install dependencies
-# TODO: requirements will be provided later
 pip install -r requirements.txt
 ```
 
@@ -98,14 +91,34 @@ UnicBench consists of **1,100 samples** across **4 task categories** and **22 su
 
 ### 1. Generate Edited Images
 
-First, generate edited images using your image editing model. The output should be saved to:
+First, generate edited images using your image editing model. The output should be saved following this path format:
 ```
 {save_dir}/{model_name}/{subtask_name}/{language}/{key}.png
 ```
 
+We provide reference inference scripts for `FLUX.1-Kontext` and `Qwen-Image-Edit`:
+```bash
+bash inference/gen_samples_flux.sh  # for FLUX.1-Kontext
+bash inference/gen_samples_qwen.sh  # for Qwen-Image-Edit
+```
+
+The output directory structure must follow the format below:
+
+```
+{save_dir}/
+└── {model_name}/
+    ├── {subtask_name}/{language}/      # Edited images
+    └── eval_output/{vlm_name}/
+        ├── {subtask_name}_{language}_results.jsonl  # Per-sample results
+        └── statistics/
+            └── {language}_statistics.json           # Aggregated statistics
+```
+
+
+
 ### 2. Run Evaluation
 
-Use `eval_pipeline.py` to evaluate edited images:
+Use `eval_pipeline.py` to evaluate edited images and compute final scores:
 
 ```bash
 cd eval
@@ -118,6 +131,15 @@ python eval_pipeline.py \
     --vlm_model_name gpt-4.1 \
     --languages en \
     --num_workers 8
+
+python eval_pipeline.py \
+    --data_path ../data/test_data.jsonl \
+    --image_dir /mnt/shenzhen2cephfs/mm-base-vision/kotisye/data/oteam_edit_500w/benchmark/UnicBench \
+    --save_dir /mnt/shenzhen2cephfs/mm-base-vision/kotisye/result/unicbench \
+    --edit_model_name qwen-image-edit \
+    --vlm_model_name gpt-4.1 \
+    --languages en \
+    --num_workers 8
 ```
 
 **Parameters:**
@@ -127,14 +149,14 @@ python eval_pipeline.py \
 | `--image_dir` | Directory containing original benchmark images |
 | `--save_dir` | Root directory to save results |
 | `--edit_model_name` | Name of your editing model |
-| `--vlm_model_name` | VLM model for evaluation (default: `gpt-4.1`) |
+| `--vlm_model_name` | VLM model for evaluation (default: `gpt-4.1-2025-04-1`) |
 | `--languages` | Languages to evaluate: `en`, `cn`, or both |
 | `--num_workers` | Number of parallel workers (for API-based VLMs) |
 | `--skip_evaluation` | Skip evaluation, only compute statistics |
 
-### 3. Calculate Statistics
+### 3. Calculate Statistics (Optional)
 
-Use `calculate_scores.py` to compute score statistics from evaluation results:
+If evaluation has already been completed and you only need to aggregate statistics, use `calculate_scores.py` to compute score statistics from evaluation results:
 
 ```bash
 python calculate_scores.py \
@@ -144,17 +166,12 @@ python calculate_scores.py \
     --languages en cn
 ```
 
-### Output Structure
+## 📈 Benchmark Results
 
-```
-{save_dir}/
-└── {model_name}/
-    ├── {subtask_name}/{language}/      # Edited images
-    └── eval_output/{vlm_name}/
-        ├── {subtask_name}_{language}_results.jsonl  # Per-sample results
-        └── statistics/
-            └── {language}_statistics.json           # Aggregated statistics
-```
+Evaluation results of mainstream image editing models on UnicBench:
+<p align="center">
+  <img src="assets/main_results.png" width="100%">
+</p>
 
 ## 📜 Citation
 
