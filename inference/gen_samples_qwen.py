@@ -172,7 +172,7 @@ def main(args):
 if __name__ == "__main__":
     import argparse
 
-    parser = argparse.ArgumentParser(description="Adaptive IMGEDIT sampling script")
+    parser = argparse.ArgumentParser(description="Editing Images")
     parser.add_argument("--model_path", type=str, default=None)
     parser.add_argument("--output_dir", type=str, default=None)
     parser.add_argument("--unicbench_path", type=str, default=None)
