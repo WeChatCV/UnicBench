@@ -21,7 +21,7 @@ With the rapid advances of powerful multimodal models such as GPT-4o, Nano Banan
 
 ## 🎯 Highlights
 
-- **UnicEdit-10M**: A 10M-scale high-quality image editing dataset with diverse basic and complex editing tasks.
+- **UnicEdit-10M**: A quality-aware data curation pipeline with unified post-verification and a 10M-scale high-quality image editing dataset with diverse basic and complex editing tasks.
 - **Qwen-Verify**: A 7B dual-task expert model for efficient failure detection and instruction recaptioning.
 - **UnicBench**: A comprehensive benchmark with novel metrics (Non-edit Consistency, Reasoning Accuracy) for fine-grained diagnosis.
 
@@ -186,7 +186,7 @@ Evaluation results of mainstream image editing models on UnicBench:
 
 ## 📄 License
 
-This project is released under the [Apache 2.0 License](LICENSE).
+This project is released under the [Apache 2.0 License](./LICENSE.txt).
 
 ## 🙏 Acknowledgements
 
