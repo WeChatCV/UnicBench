@@ -1,4 +1,18 @@
 # UnicEdit-10M: A Dataset and Benchmark Breaking the Scale-Quality Barrier via Unified Verification for Reasoning-Enriched Edits
+
+<p align="center">
+  <a href="https://huggingface.co/datasets/xiaotanhua/UnicBench">
+    <img src="https://img.shields.io/badge/🤗%20Hugging Face-UnicBench-yellow">
+  </a>
+  <a href="TODO_ARXIV_LINK">
+    <img src="https://img.shields.io/badge/arXiv-Paper-red">
+  </a>
+  <a href="TODO_PROJECT_PAGE_LINK">
+    <img src="https://img.shields.io/badge/Project-Page-blue">
+  </a>
+</p>
+
+
 ## 📌 Abstract
 
 With the rapid advances of powerful multimodal models such as GPT-4o, Nano Banana, and Seedream 4.0 in Image Editing, the performance gap between closed-source and open-source models is widening, primarily due to the scarcity of large-scale, high-quality training data and comprehensive benchmarks capable of diagnosing model weaknesses across diverse editing behaviors. Existing data construction methods face a scale-quality trade-off: human annotations are high-quality but not scalable, while automated pipelines suffer from error propagation and noise. To address this, we introduce a lightweight data pipeline that replaces multi-toolchains with an end-to-end model and a unified post-verification stage. For scalable quality control, we train a 7B dual-task expert model, **Qwen-Verify**, for efficient failure detection and instruction recaptioning. This pipeline yields **UnicEdit-10M**, a 10M-scale dataset spanning diverse basic and complex editing tasks. We also propose **UnicBench**, a general benchmark that extends beyond basic edits to explicitly assess spatial and knowledge-driven reasoning. To enable fine-grained diagnosis, we introduce novel metrics, including *Non-edit Consistency* and *Reasoning Accuracy*. Our analysis of mainstream models on UnicBench reveals their limitations and provides clear directions for future research. The dataset, benchmark, and code will be released.
@@ -65,6 +79,20 @@ conda activate unicbench
 pip install -r requirements.txt
 ```
 
+## 📥 Dataset
+
+You can load the dataset directly from Hugging Face using the `datasets` library:
+
+```python
+from datasets import load_dataset
+
+# Load the dataset
+ds = load_dataset("xiaotanhua/UnicBench")
+
+# Access data
+print(ds['train'][0])
+```
+
 ## 📐 UnicBench
 
 ### Benchmark Overview
@@ -118,8 +146,22 @@ The output directory structure must follow the format below:
 
 ### 2. Run Evaluation
 
-Use `eval_pipeline.py` to evaluate edited images and compute final scores:
+Use `eval_pipeline.py` to evaluate edited images and compute final scores. You can load data from a local JSONL file or directly from Hugging Face.
 
+**Option 1: Using Hugging Face Dataset (Recommended)**
+```bash
+cd eval
+
+python eval_pipeline.py \
+    --data_path xiaotanhua/UnicBench \
+    --save_dir /path/to/results \
+    --edit_model_name your_model_name \
+    --vlm_model_name gpt-4.1 \
+    --languages en \
+    --num_workers 8
+```
+
+**Option 2: Using Local JSONL File**
 ```bash
 cd eval
 
@@ -131,22 +173,13 @@ python eval_pipeline.py \
     --vlm_model_name gpt-4.1 \
     --languages en \
     --num_workers 8
-
-python eval_pipeline.py \
-    --data_path ../data/test_data.jsonl \
-    --image_dir /mnt/shenzhen2cephfs/mm-base-vision/kotisye/data/oteam_edit_500w/benchmark/UnicBench \
-    --save_dir /mnt/shenzhen2cephfs/mm-base-vision/kotisye/result/unicbench \
-    --edit_model_name qwen-image-edit \
-    --vlm_model_name gpt-4.1 \
-    --languages en \
-    --num_workers 8
 ```
 
 **Parameters:**
 | Parameter | Description |
 |-----------|-------------|
-| `--data_path` | Path to test data jsonl file |
-| `--image_dir` | Directory containing original benchmark images |
+| `--data_path` | Path to test data jsonl file OR Hugging Face dataset name (e.g., `xiaotanhua/UnicBench`) |
+| `--image_dir` | Directory containing original benchmark images (Required for JSONL, Optional for HF dataset) |
 | `--save_dir` | Root directory to save results |
 | `--edit_model_name` | Name of your editing model |
 | `--vlm_model_name` | VLM model for evaluation (default: `gpt-4.1-2025-04-1`) |
@@ -186,7 +219,7 @@ Evaluation results of mainstream image editing models on UnicBench:
 
 ## 📄 License
 
-This project is released under the [Apache 2.0 License](./LICENSE.txt).
+This project is released under the [Apache 2.0 License](./LICENSE).
 
 ## 🙏 Acknowledgements
 
