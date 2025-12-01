@@ -22,8 +22,8 @@ With the rapid advances of powerful multimodal models such as GPT-4o, Nano Banan
 
 ## 🔥 News
 
-- **[2025.xx]** Code and benchmark released.
-- **[2025.xx]** Paper released on arXiv.
+- **[2025.12.2]** Code and benchmark released.
+- **[2025.12.2]** Paper released on arXiv.
 
 ## ✅ TODO
 
