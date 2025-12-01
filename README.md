@@ -7,7 +7,7 @@
   <a href="TODO_ARXIV_LINK">
     <img src="https://img.shields.io/badge/arXiv-Paper-red">
   </a>
-  <a href="TODO_PROJECT_PAGE_LINK">
+  <a href="https://hongsexiaotanhua.github.io/UnicEdit-10M/">
     <img src="https://img.shields.io/badge/Project-Page-blue">
   </a>
 </p>
