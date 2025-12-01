@@ -10,6 +10,7 @@ import torch.distributed as dist
 from PIL import Image
 from tqdm import tqdm
 from transformers import AutoProcessor, AutoTokenizer, AutoModel
+from datasets import load_dataset
 
 from diffusers import FluxKontextPipeline
 from diffusers.utils import load_image
@@ -125,11 +126,18 @@ def main(args):
     os.makedirs(args.output_dir, exist_ok=True)
 
     # Load prompts for IMGEDIT task
-    with open(args.unicbench_path, "r", encoding="utf-8") as f:
-        lines = f.readlines()
-        data = {}
-        for line in lines:
-            item = json.loads(line.strip())
+    data = {}
+    if args.unicbench_path.endswith('.jsonl'):
+        with open(args.unicbench_path, "r", encoding="utf-8") as f:
+            lines = f.readlines()
+            for line in lines:
+                item = json.loads(line.strip())
+                data[item["key"]] = item
+    else:
+        ds = load_dataset(args.unicbench_path)
+        if 'train' in ds:
+            ds = ds['train']
+        for item in ds:
             data[item["key"]] = item
 
     if isinstance(args.languages, str):
@@ -141,12 +149,19 @@ def main(args):
         outpath = os.path.join(outpath, args.model_name)
         os.makedirs(outpath, exist_ok=True)
 
-        img_path = value["image_path"]
-        img_path = os.path.join(args.unicbench_dir, img_path)
+        if "image" in value and value["image"] is not None:
+            img_input = value["image"]
+        else:
+            img_path = value["image_path"]
+            if args.unicbench_dir:
+                img_input = os.path.join(args.unicbench_dir, img_path)
+            else:
+                img_input = img_path
+
         subtask = value["subtask"]
         for lang in args.languages:
             prompt = value[lang]
-            inference_list.append([prompt, outpath, key, img_path, subtask, lang])
+            inference_list.append([prompt, outpath, key, img_input, subtask, lang])
 
     # shard across GPUs
     inference_list = inference_list[args.local_rank :: args.world_size]
