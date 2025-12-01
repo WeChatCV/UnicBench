@@ -1,15 +1,3 @@
-"""
-UnicBench Score Calculator
-分数统计工具代码
-
-使用方法:
-python calculate_scores.py \
-    --save_dir /path/to/results \
-    --edit_model_name qwen-image-edit \
-    --vlm_model_name gpt-4.1 \
-    --languages en cn
-"""
-
 import os
 import json
 import argparse
@@ -19,7 +7,7 @@ import numpy as np
 
 
 def setup_logging(log_level: str = "INFO") -> None:
-    """配置日志"""
+    """Configure logging settings."""
     logging.basicConfig(
         level=getattr(logging, log_level.upper()),
         format='%(asctime)s - %(levelname)s - %(message)s',
@@ -31,7 +19,7 @@ def setup_logging(log_level: str = "INFO") -> None:
 
 
 def compute_stats_for_group(results: List[Dict], group_name: str) -> Dict[str, float]:
-    """计算一组结果的统计信息"""
+    """Compute statistics for a group of results."""
     if not results:
         return {}
     
@@ -43,7 +31,7 @@ def compute_stats_for_group(results: List[Dict], group_name: str) -> Dict[str, f
         "overall_mean": np.mean([r["overall_score"] for r in results])
     }
     
-    # 添加RA统计
+    # Add RA statistics
     ra_scores = [r["ra_score"] for r in results if r["ra_score"] is not None]
     if ra_scores:
         stats["ra_mean"] = np.mean(ra_scores)
@@ -53,12 +41,12 @@ def compute_stats_for_group(results: List[Dict], group_name: str) -> Dict[str, f
 
 
 def print_statistics_summary(stats: Dict, language: str) -> None:
-    """打印统计摘要"""
+    """Print statistics summary."""
     logging.info(f"\n{'='*60}")
     logging.info(f"Statistics Summary - {language.upper()}")
     logging.info(f"{'='*60}")
     
-    # 整体统计
+    # Overall statistics
     overall = stats["overall"]
     logging.info(f"\nOverall (n={overall['count']}):")
     logging.info(f"  IF:      {overall['if_mean']:.4f}")
@@ -68,7 +56,7 @@ def print_statistics_summary(stats: Dict, language: str) -> None:
         logging.info(f"  RA:      {overall['ra_mean']:.4f} (n={overall['ra_count']})")
     logging.info(f"  Overall: {overall['overall_mean']:.4f}")
     
-    # Task级别统计
+    # Task-level statistics
     logging.info(f"\nBy Task:")
     for task, task_stats in stats["by_task"].items():
         logging.info(f"  {task} (n={task_stats['count']}):")
@@ -77,7 +65,7 @@ def print_statistics_summary(stats: Dict, language: str) -> None:
         if "ra_mean" in task_stats:
             logging.info(f"    RA: {task_stats['ra_mean']:.4f}")
     
-    # Subtask级别统计
+    # Subtask-level statistics
     logging.info(f"\nBy Subtask:")
     for subtask, subtask_stats in stats["by_subtask"].items():
         logging.info(f"  {subtask} (n={subtask_stats['count']}):")
@@ -93,7 +81,7 @@ def compute_statistics(
     vlm_model_name: str,
     languages: List[str]
 ) -> Dict[str, Any]:
-    """计算所有评估结果的统计信息"""
+    """Compute statistics for all evaluation results."""
     logging.info("="*60)
     logging.info("Computing Statistics")
     logging.info("="*60)
@@ -103,7 +91,7 @@ def compute_statistics(
     for language in languages:
         logging.info(f"\nComputing statistics for language: {language}")
         
-        # 收集所有结果
+        # Collect all results
         all_results = []
         eval_base_dir = os.path.join(
             save_dir,
@@ -112,7 +100,7 @@ def compute_statistics(
             vlm_model_name
         )
         
-        # 查找所有结果文件
+        # Find all result files
         if not os.path.exists(eval_base_dir):
             logging.warning(f"Evaluation directory not found: {eval_base_dir}")
             continue
@@ -129,31 +117,31 @@ def compute_statistics(
             logging.warning(f"No results found for language: {language}")
             continue
         
-        # 计算整体统计
+        # Compute overall statistics
         overall_stats = compute_stats_for_group(all_results, "Overall")
         
-        # 计算Task级别统计
+        # Compute task-level statistics
         task_stats = {}
         tasks = set([r["task"] for r in all_results])
         for task in tasks:
             task_results = [r for r in all_results if r["task"] == task]
             task_stats[task] = compute_stats_for_group(task_results, task)
         
-        # 计算Subtask级别统计
+        # Compute subtask-level statistics
         subtask_stats = {}
         subtasks = set([r["subtask"] for r in all_results])
         for subtask in subtasks:
             subtask_results = [r for r in all_results if r["subtask"] == subtask]
             subtask_stats[subtask] = compute_stats_for_group(subtask_results, subtask)
         
-        # 存储统计信息
+        # Store statistics
         all_statistics[language] = {
             "overall": overall_stats,
             "by_task": task_stats,
             "by_subtask": subtask_stats
         }
         
-        # 保存统计信息到文件
+        # Save statistics to file
         stats_dir = os.path.join(
             save_dir,
             edit_model_name,
@@ -169,44 +157,44 @@ def compute_statistics(
         
         logging.info(f"Saved statistics to {stats_file}")
         
-        # 打印摘要
+        # Print summary
         print_statistics_summary(all_statistics[language], language)
     
     return all_statistics
 
 
 def parse_arguments() -> argparse.Namespace:
-    """解析命令行参数"""
+    """Parse command line arguments."""
     parser = argparse.ArgumentParser(description="UnicBench Score Calculator")
     
     parser.add_argument('--save_dir', type=str, required=True,
-                       help='结果保存根目录')
+                       help='Root directory for saving results')
     parser.add_argument('--edit_model_name', type=str, required=True,
-                       help='编辑模型名称')
+                       help='Name of the image editing model')
     parser.add_argument('--vlm_model_name', type=str, required=True,
-                       help='VLM评估模型名称')
+                       help='Name of the VLM evaluation model')
     parser.add_argument('--languages', type=str, nargs='+', default=['en'],
                        choices=['en', 'cn'],
-                       help='测试语言 (en, cn, 或两者)')
+                       help='Evaluation languages (en, cn, or both)')
     parser.add_argument('--log_level', type=str, default='INFO',
                        choices=['DEBUG', 'INFO', 'WARNING', 'ERROR'],
-                       help='日志级别')
+                       help='Logging level')
     
     return parser.parse_args()
 
 
 def main():
-    """主函数"""
+    """Main function."""
     args = parse_arguments()
     
-    # 配置日志
+    # Configure logging
     setup_logging(args.log_level)
     
     logging.info("="*60)
     logging.info("Starting UnicBench Score Calculator")
     logging.info("="*60)
     
-    # 计算统计信息
+    # Compute statistics
     compute_statistics(
         save_dir=args.save_dir,
         edit_model_name=args.edit_model_name,
