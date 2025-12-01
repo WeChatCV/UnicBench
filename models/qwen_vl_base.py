@@ -14,18 +14,18 @@ class QwenVL:
         gpu_memory_utilization: float = 0.9
     ):
         """
-        初始化QwenVL模型
+        Initialize QwenVL model
         
         Args:
-            model_path: 模型路径
-            tensor_parallel_size: GPU并行数量，可选值为1,2,4,8
-            trust_remote_code: 是否信任远程代码
-            gpu_memory_utilization: GPU内存使用率
+            model_path: Path to the model
+            tensor_parallel_size: Number of GPUs for tensor parallelism, valid values are 1, 2, 4, 8
+            trust_remote_code: Whether to trust remote code
+            gpu_memory_utilization: GPU memory utilization
         """
-        # 验证tensor_parallel_size参数
+        # Validate tensor_parallel_size parameter
         valid_sizes = [1, 2, 4, 8]
         if tensor_parallel_size not in valid_sizes:
-            print(f"警告: tensor_parallel_size={tensor_parallel_size}不是有效值，将使用默认值2")
+            print(f"Warning: tensor_parallel_size={tensor_parallel_size} is not valid, using default value 2")
             tensor_parallel_size = 2
             
         self.processor = AutoProcessor.from_pretrained(model_path)
@@ -37,7 +37,7 @@ class QwenVL:
             gpu_memory_utilization=gpu_memory_utilization
         )
         
-        # 默认采样参数
+        # Default sampling parameters
         self.default_sampling_params = SamplingParams(
             temperature=0.1,
             top_p=0.001,
@@ -106,15 +106,15 @@ class QwenVL:
         custom_sampling_params: Optional[SamplingParams] = None
     ) -> str:
         """
-        模型前向推理
+        Model forward inference
         
         Args:
-            image: PIL图像对象或图像列表
-            prompt_template: 提示模板
-            custom_sampling_params: 自定义采样参数
+            image: PIL Image object or list of images
+            prompt_template: Prompt template
+            custom_sampling_params: Custom sampling parameters
             
         Returns:
-            Tuple[str, tuple]: (生成的文本, 图像尺寸)
+            Tuple[str, tuple]: (Generated text, image size)
         """
         if not isinstance(image, List):
             image = [image]
@@ -167,8 +167,8 @@ class QwenVL:
 
 
 if __name__ == "__main__":
-    qwen = QwenVL(model_path="/mnt/shenzhen2cephfs/mm-base-vision/kotisye/pretrain/Qwen2.5-VL-72B-Instruct", tensor_parallel_size=2)
+    qwen = QwenVL(model_path="pretrain/Qwen2.5-VL-72B-Instruct", tensor_parallel_size=2)
     image = Image.open("test.jpg")
-    prompt_template = "请描述这张图片"
+    prompt_template = "Please describe the content of the image in detail."
     generated_text, resize_size = qwen.forward(image, prompt_template)
     print(generated_text)
