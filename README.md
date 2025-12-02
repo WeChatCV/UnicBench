@@ -182,7 +182,7 @@ python eval_pipeline.py \
 | `--image_dir` | Directory containing original benchmark images (Required for JSONL, Optional for HF dataset) |
 | `--save_dir` | Root directory to save results |
 | `--edit_model_name` | Name of your editing model |
-| `--vlm_model_name` | VLM model for evaluation (default: `gpt-4.1-2025-04-1`) |
+| `--vlm_model_name` | VLM model for evaluation (default: `gpt-4.1-2025-04-14`) |
 | `--languages` | Languages to evaluate: `en`, `cn`, or both |
 | `--num_workers` | Number of parallel workers (for API-based VLMs) |
 | `--skip_evaluation` | Skip evaluation, only compute statistics |
