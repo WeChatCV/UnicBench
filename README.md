@@ -4,7 +4,7 @@
   <a href="https://huggingface.co/datasets/xiaotanhua/UnicBench">
     <img src="https://img.shields.io/badge/🤗%20Hugging Face-UnicBench-yellow">
   </a>
-  <a href="TODO_ARXIV_LINK">
+  <a href="http://arxiv.org/abs/2512.02790">
     <img src="https://img.shields.io/badge/arXiv-Paper-red">
   </a>
   <a href="https://hongsexiaotanhua.github.io/UnicEdit-10M/">
