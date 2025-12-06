@@ -209,10 +209,10 @@ Evaluation results of mainstream image editing models on UnicBench:
 ## 📜 Citation
 
 ```bibtex
-@article{unicedit2025,
+@article{ye2025unicedit,
   title={UnicEdit-10M: A Dataset and Benchmark Breaking the Scale-Quality Barrier via Unified Verification for Reasoning-Enriched Edits},
-  author={},
-  journal={arXiv preprint},
+  author={Ye, Keming and Huang, Zhipeng and Fu, Canmiao and Liu, Qingyang and Cai, Jiani and Lv, Zheqi and Li, Chen and Lyu, Jing and Zhao, Zhou and Zhang, Shengyu},
+  journal={arXiv preprint arXiv:2512.02790},
   year={2025}
 }
 ```
