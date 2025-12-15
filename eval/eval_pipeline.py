@@ -54,8 +54,8 @@ class VLMModel:
         self.model_path = model_path
 
         if model_name == "gpt-4.1":
-            from models.ichat_gpt4o import Ichat_GPT4o
-            self.model = Ichat_GPT4o(model="gpt-4.1")
+            from models.gpt4p1 import GPT4o
+            self.model = GPT4o(api_key=os.getenv("OPENAI_API_KEY"), model_name="gpt-4.1-2025-04-14")
         elif model_name == "qwen25vl":
             from models.qwen_vl_base import QwenVL
             self.model = QwenVL(model_path=model_path, tensor_parallel_size=8)
