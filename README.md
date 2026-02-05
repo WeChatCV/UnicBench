@@ -32,7 +32,7 @@ With the rapid advances of powerful multimodal models such as GPT-4o, Nano Banan
 
 - [x] Release UnicBench evaluation code
 - [x] Release benchmark test data
-- [ ] Release UnicEdit-10M dataset
+- [x] Release UnicEdit-10M dataset
 - [ ] Release Qwen-Verify model
 - [ ] Release data generation pipeline
 
