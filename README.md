@@ -1,6 +1,9 @@
 # UnicEdit-10M: A Dataset and Benchmark Breaking the Scale-Quality Barrier via Unified Verification for Reasoning-Enriched Edits
 
 <p align="center">
+  <a href="https://huggingface.co/datasets/xiaotanhua/UnicEdit-10M">
+    <img src="https://img.shields.io/badge/🤗%20Hugging Face-UnicEdit--10M-yellow">
+  </a>
   <a href="https://huggingface.co/datasets/xiaotanhua/UnicBench">
     <img src="https://img.shields.io/badge/🤗%20Hugging Face-UnicBench-yellow">
   </a>
@@ -81,7 +84,30 @@ pip install -r requirements.txt
 
 ## 📥 Dataset
 
-You can load the dataset directly from Hugging Face using the `datasets` library:
+### UnicEdit-10M Dataset
+
+You can load the UnicEdit-10M dataset directly from Hugging Face using the `datasets` library:
+
+```python
+from datasets import load_dataset
+
+# Load the full dataset
+dataset = load_dataset("xiaotanhua/UnicEdit-10M")
+
+# Streaming mode (recommended for large datasets)
+dataset = load_dataset("xiaotanhua/UnicEdit-10M", streaming=True)
+
+# Access samples
+for sample in dataset['train']:
+    print(sample['key'])
+    print(sample['prompt_en'])
+    # sample['src_image'] and sample['edit_image'] are PIL Image objects
+    break
+```
+
+### UnicBench Benchmark
+
+You can load the UnicBench benchmark directly from Hugging Face using the `datasets` library:
 
 ```python
 from datasets import load_dataset
