@@ -31,7 +31,9 @@ class GPT4o:
             are_images_encoded (bool): Whether the images are encoded in base64. Defaults to False.
         """
         self.api_key = api_key
-        self.url = "https://api.openai.com/v1/chat/completions"
+        self.base_url = ""
+        self.url = f"{self.base_url}/v1/chat/completions"
+        # self.url = "https://api.openai.com/v1/chat/completions"
         self.model_name = model_name
 
     def forward(self, final_prompt, max_retries=10):
@@ -85,8 +87,22 @@ class GPT4o:
             print(f"Error Occur, content: {r_content}, exception: {str(e)}")
             res_json = None
 
-        msg = res_json.get('msg', None)
-        if msg is None or msg != 'success':
+        msg = res_json.get('choices', None)
+        if msg is None:
             print(f"Error Occur, msg: {msg}")
             return None
-        return res_json['response']
+        return msg[0]["message"]["content"]
+    
+if __name__ == "__main__":
+    API_KEY = ""
+
+    llm = GPT4o(api_key=API_KEY)
+    image_path = "assets/test.png"
+
+    from PIL import Image
+    img = Image.open(image_path).convert("RGB")
+    prompt = "Describe the image briefly."
+
+    final_prompt = llm.prepare_prompt(image_list=[img], text_prompt=prompt)
+    response = llm.forward(final_prompt)
+    print("Response:", response)
