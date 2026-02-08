@@ -24,7 +24,8 @@ With the rapid advances of powerful multimodal models such as GPT-4o, Nano Banan
 </p>
 
 ## 🔥 News
-
+- **[2026.2.8]** We integrated the evaluation of **LongCat-Image-Edit** into the full benchmark comparison table.
+- **[2026.2.5]** UnicEdit-10M released.
 - **[2025.12.2]** Code and benchmark released.
 - **[2025.12.2]** Paper released on arXiv.
 
@@ -228,9 +229,209 @@ python calculate_scores.py \
 ## 📈 Benchmark Results
 
 Evaluation results of mainstream image editing models on UnicBench:
-<p align="center">
+<!-- <p align="center">
   <img src="assets/main_results.png" width="100%">
-</p>
+</p> -->
+<div style="overflow-x: auto; margin-bottom: 16px;">
+  <table style="border-collapse: collapse; width: 100%; font-size: 14px;">
+    <thead>
+      <tr>
+        <th style="white-space: nowrap; padding: 8px; border: 1px solid #d0d7de; background-color: #f6f8fa;" rowspan="2">Model</th>
+        <th style="padding: 8px; border: 1px solid #d0d7de; background-color: #f6f8fa;" colspan="5">Overall-EN</th>
+        <th style="padding: 8px; border: 1px solid #d0d7de; background-color: #f6f8fa;" colspan="5">Overall-CN</th>
+      </tr>
+      <tr>
+        <th style="white-space: nowrap; padding: 8px; border: 1px solid #d0d7de; background-color: #f6f8fa;">IF</th>
+        <th style="white-space: nowrap; padding: 8px; border: 1px solid #d0d7de; background-color: #f6f8fa;">NC</th>
+        <th style="white-space: nowrap; padding: 8px; border: 1px solid #d0d7de; background-color: #f6f8fa;">VQ</th>
+        <th style="white-space: nowrap; padding: 8px; border: 1px solid #d0d7de; background-color: #f6f8fa;">RA</th>
+        <th style="white-space: nowrap; padding: 8px; border: 1px solid #d0d7de; background-color: #f6f8fa;">Overall</th>
+        <th style="white-space: nowrap; padding: 8px; border: 1px solid #d0d7de; background-color: #f6f8fa;">IF</th>
+        <th style="white-space: nowrap; padding: 8px; border: 1px solid #d0d7de; background-color: #f6f8fa;">NC</th>
+        <th style="white-space: nowrap; padding: 8px; border: 1px solid #d0d7de; background-color: #f6f8fa;">VQ</th>
+        <th style="white-space: nowrap; padding: 8px; border: 1px solid #d0d7de; background-color: #f6f8fa;">RA</th>
+        <th style="white-space: nowrap; padding: 8px; border: 1px solid #d0d7de; background-color: #f6f8fa;">Overall</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="padding: 8px; border: 1px solid #d0d7de; background-color: #eaecef; font-style: italic; text-align: center;" colspan="11">Open-Source Models</td>
+      </tr>
+      <tr>
+        <td style="white-space: nowrap; padding: 8px; border: 1px solid #d0d7de;">Instruct-Pix2Pix</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">2.8526</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">4.0983</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">3.9672</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">1.9560</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">2.9221</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">-</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">-</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">-</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">-</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">-</td>
+      </tr>
+      <tr>
+        <td style="white-space: nowrap; padding: 8px; border: 1px solid #d0d7de;">MagicBrush</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">2.3403</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">3.3849</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">3.4559</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">1.7240</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">2.3407</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">-</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">-</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">-</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">-</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">-</td>
+      </tr>
+      <tr>
+        <td style="white-space: nowrap; padding: 8px; border: 1px solid #d0d7de;">OmniGen2</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">6.2455</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">7.4973</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">6.4891</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">5.1240</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">6.1246</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">-</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">-</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">-</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">-</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">-</td>
+      </tr>
+      <tr>
+        <td style="white-space: nowrap; padding: 8px; border: 1px solid #d0d7de;">UniWorld-v1</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">5.3055</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">7.3091</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">6.4827</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">4.0160</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">5.6013</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">-</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">-</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">-</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">-</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">-</td>
+      </tr>
+      <tr>
+        <td style="white-space: nowrap; padding: 8px; border: 1px solid #d0d7de;">FLUX.1-Kontext</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">6.7755</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;"><u>8.4718</u></td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">7.3600</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">5.5040</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">6.8045</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">-</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">-</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">-</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">-</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">-</td>
+      </tr>
+      <tr>
+        <td style="white-space: nowrap; padding: 8px; border: 1px solid #d0d7de;">BAGEL</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">7.2491</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">8.1982</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">7.1391</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">5.2600</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">6.9794</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">7.3018</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">8.2845</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">7.3118</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">5.2840</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">7.1056</td>
+      </tr>
+      <tr>
+        <td style="white-space: nowrap; padding: 8px; border: 1px solid #d0d7de;">Step1X-Edit-v1.1</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">6.9945</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">8.2045</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">7.3382</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">5.0400</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">6.9202</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">7.0282</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;"><u>8.4118</u></td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">7.5600</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">5.0560</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">7.0620</td>
+      </tr>
+      <tr>
+        <td style="white-space: nowrap; padding: 8px; border: 1px solid #d0d7de;">Qwen-Image-Edit</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;"><u>8.2055</u></td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">8.0264</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;"><u>8.0745</u></td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;"><u>6.4480</u></td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;"><u>7.7273</u></td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;"><u>8.3718</u></td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">7.8000</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;"><u>8.2118</u></td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;"><u>6.6560</u></td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;"><u>7.7790</u></td>
+      </tr>
+      <tr>
+        <td style="white-space: nowrap; padding: 8px; border: 1px solid #d0d7de;">LongCat-Image-Edit</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;"><b>8.6058</b></td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;"><b>8.8321</b></td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;"><b>8.2774</b></td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;"><b>7.3482</b></td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;"><b>8.2344</b></td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;"><b>8.6427</b></td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;"><b>8.9109</b></td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;"><b>8.3500</b></td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;"><b>7.3800</b></td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;"><b>8.2993</b></td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border: 1px solid #d0d7de; background-color: #eaecef; font-style: italic; text-align: center;" colspan="11">Closed-source Models</td>
+      </tr>
+      <tr>
+        <td style="white-space: nowrap; padding: 8px; border: 1px solid #d0d7de;">Nano Banana</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">7.9753</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;"><b>8.9808</b></td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;"><u>8.1954</u></td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">6.8680</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">7.8792</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">8.1550</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;"><b>9.0438</b></td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;"><u>8.3291</u></td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">6.8960</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">8.0358</td>
+      </tr>
+      <tr>
+        <td style="white-space: nowrap; padding: 8px; border: 1px solid #d0d7de;">Seedit 3.0</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">8.2717</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">8.4251</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">7.8392</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">6.9393</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">7.8671</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;"><u>8.3721</u></td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">8.4502</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">7.9795</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">6.8395</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">7.9753</td>
+      </tr>
+      <tr>
+        <td style="white-space: nowrap; padding: 8px; border: 1px solid #d0d7de;">Seedream 4.0</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;"><u>8.3764</u></td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;"><u>8.7200</u></td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">8.0736</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;"><u>7.5960</u></td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;"><u>8.0428</u></td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">8.3418</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;"><u>8.6600</u></td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">8.1364</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;"><u>7.1240</u></td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;"><u>8.0474</u></td>
+      </tr>
+      <tr>
+        <td style="white-space: nowrap; padding: 8px; border: 1px solid #d0d7de;">GPT-Image-1</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;"><b>9.1551</b></td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">7.8449</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;"><b>8.6830</b></td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;"><b>8.3392</b></td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;"><b>8.3546</b></td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;"><b>9.2759</b></td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;">7.8906</td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;"><b>8.6980</b></td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;"><b>8.2247</b></td>
+        <td style="padding: 8px; border: 1px solid #d0d7de;"><b>8.4506</b></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
 ## 📜 Citation
 
