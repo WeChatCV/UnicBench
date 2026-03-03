@@ -1,4 +1,4 @@
-# UnicEdit-10M: A Dataset and Benchmark Breaking the Scale-Quality Barrier via Unified Verification for Reasoning-Enriched Edits
+# [CVPR 2026] UnicEdit-10M: A Dataset and Benchmark Breaking the Scale-Quality Barrier via Unified Verification for Reasoning-Enriched Edits
 
 <p align="center">
   <a href="https://huggingface.co/datasets/xiaotanhua/UnicEdit-10M">
@@ -6,6 +6,9 @@
   </a>
   <a href="https://huggingface.co/datasets/xiaotanhua/UnicBench">
     <img src="https://img.shields.io/badge/🤗%20Hugging Face-UnicBench-yellow">
+  </a>
+  <a href="http://arxiv.org/abs/2512.02790">
+    <img src="https://img.shields.io/badge/CVPR-2026-4b44ce">
   </a>
   <a href="http://arxiv.org/abs/2512.02790">
     <img src="https://img.shields.io/badge/arXiv-Paper-red">
@@ -24,6 +27,7 @@ With the rapid advances of powerful multimodal models such as GPT-4o, Nano Banan
 </p>
 
 ## 🔥 News
+- **[2026.3.3]** Our paper has been accepted by **CVPR 2026**! 🎉
 - **[2026.2.8]** We integrated the evaluation of **LongCat-Image-Edit** into the full benchmark comparison table.
 - **[2026.2.5]** UnicEdit-10M released.
 - **[2025.12.2]** Code and benchmark released.
